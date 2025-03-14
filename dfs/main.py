@@ -152,7 +152,7 @@ def draw_search_tree(tree, output_file="search_tree_dfs.png"):
     node_colors = []
     for n in tree.nodes():
         label = labels.get(n, "")
-        fill_color = "lightgray"  # cor padrão para nós sem atribuição
+        fill_color = "lightgray"  
         if " = " in label:
             try:
                 parts = label.split(" = ")
