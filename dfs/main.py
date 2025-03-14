@@ -75,49 +75,49 @@ def state_to_string_simple(state, vertices):
     else:
         return f"ID {tree_node_id}: sem cor"
 
-def bfs(G, vertices, root_id, log_filename="bfs_log.txt"):
+def dfs(G, vertices, root_id, log_filename="dfs_log.txt"):
     """
-    Executa a busca em largura para encontrar uma coloração válida.
-    Em cada iteração, grava um log simples (em português) com a lista de estados
-    abertos ("Abertos") e fechados ("Fechados").
+    Executa a busca em profundidade para encontrar uma coloração válida.
+    Em cada iteração, grava (comentado, mas pode ser reativado) um log simples (em português)
+    com a lista de estados abertos ("Abertos") e fechados ("Fechados").
     
     Cada estado é representado por (assignment, index, tree_node_id).
     """
-    open_queue = []
+    open_stack = []
     closed_states = []
     initial_state = ({}, 0, root_id)
-    open_queue.append(initial_state)
+    open_stack.append(initial_state)
     iteration = 0
 
-    # with open(log_filename, "w", encoding="utf-8") as log_file:
-    while open_queue:
-        # log_file.write(f"Iteração {iteration}:\n")
-        # log_file.write("Abertos: " + ", ".join([state_to_string_simple(s, vertices) for s in open_queue]) + "\n")
-        # log_file.write("Fechados: " + ", ".join([state_to_string_simple(s, vertices) for s in closed_states]) + "\n\n")
-        iteration += 1
+    with open(log_filename, "w", encoding="utf-8") as log_file:
+        while open_stack:
+            log_file.write(f"Iteração {iteration}:\n")
+            log_file.write("Abertos: " + ", ".join([state_to_string_simple(s, vertices) for s in open_stack]) + "\n")
+            log_file.write("Fechados: " + ", ".join([state_to_string_simple(s, vertices) for s in closed_states]) + "\n\n")
+            iteration += 1
 
-        state = open_queue.pop(0)
-        assignment, index, tree_node_id = state
+            state = open_stack.pop()
+            assignment, index, tree_node_id = state
 
-        if index == len(vertices):
-            sol_label = "Solução: " + str(assignment)
-            add_tree_node(sol_label, tree_node_id)
-            return assignment
+            if index == len(vertices):
+                sol_label = "Solução: " + str(assignment)
+                add_tree_node(sol_label, tree_node_id)
+                return assignment
 
-        vertex = vertices[index]
-        for color in [1, 2, 3, 4]:
-            if is_valid(G, vertex, color, assignment):
-                new_assignment = assignment.copy()
-                new_assignment[vertex] = color
-                new_index = index + 1
-                new_label = f"{vertex} = {color}"
-                new_tree_node_id = add_tree_node(new_label, tree_node_id)
-                new_state = (new_assignment, new_index, new_tree_node_id)
-                open_queue.append(new_state)
-        closed_states.append(state)
+            vertex = vertices[index]
+            for color in [1, 2, 3, 4]:
+                if is_valid(G, vertex, color, assignment):
+                    new_assignment = assignment.copy()
+                    new_assignment[vertex] = color
+                    new_index = index + 1
+                    new_label = f"{vertex} = {color}"
+                    new_tree_node_id = add_tree_node(new_label, tree_node_id)
+                    new_state = (new_assignment, new_index, new_tree_node_id)
+                    open_stack.append(new_state)
+            closed_states.append(state)
     return None
 
-def draw_colored_graph(G, assignment, output_file="colored_graph_bfs.png"):
+def draw_colored_graph(G, assignment, output_file="colored_graph_dfs.png"):
     """
     Desenha o grafo colorido usando o dicionário 'assignment' e salva a imagem.
     """
@@ -125,17 +125,17 @@ def draw_colored_graph(G, assignment, output_file="colored_graph_bfs.png"):
     node_colors = [color_map[assignment[node]] if node in assignment else "gray" for node in G.nodes()]
     
     try:
-        pos = nx.nx_agraph.graphviz_layout(tree, prog='dot', args='-Granksep=2 -Gnodesep=1')
+        pos = nx.nx_agraph.graphviz_layout(G, prog='dot', args='-Granksep=2 -Gnodesep=1')
     except Exception as e:
-        pos = nx.spring_layout(tree)
+        pos = nx.spring_layout(G)
 
     plt.figure(figsize=(8, 6))
     nx.draw(G, pos, with_labels=True, node_color=node_colors, node_size=800, font_size=12)
-    plt.title("Grafo Colorido (BFS)")
+    plt.title("Grafo Colorido (DFS)")
     plt.savefig(output_file)
     plt.close()
 
-def draw_search_tree(tree, output_file="search_tree_bfs.png"):
+def draw_search_tree(tree, output_file="search_tree_dfs.png"):
     """
     Desenha a árvore de busca com nós preenchidos com a cor correspondente.
     Tenta usar um layout hierárquico com Graphviz, aplicando espaçamentos personalizados;
@@ -152,7 +152,7 @@ def draw_search_tree(tree, output_file="search_tree_bfs.png"):
     node_colors = []
     for n in tree.nodes():
         label = labels.get(n, "")
-        fill_color = "lightgray" 
+        fill_color = "lightgray"  # cor padrão para nós sem atribuição
         if " = " in label:
             try:
                 parts = label.split(" = ")
@@ -166,10 +166,9 @@ def draw_search_tree(tree, output_file="search_tree_bfs.png"):
     plt.figure(figsize=(16, 12))
     nx.draw(tree, pos, with_labels=True, labels=labels, node_color=node_colors,
             node_size=500, font_size=10, arrows=True)
-    plt.title("Árvore de Busca (BFS) com nós coloridos")
+    plt.title("Árvore de Busca (DFS) com nós coloridos")
     plt.savefig(output_file)
     plt.close()
-
 
 def main():
     if len(sys.argv) < 2:
@@ -181,19 +180,19 @@ def main():
     vertices.sort()
     
     root_id = add_tree_node("root")
-    solution = bfs(G, vertices, root_id, log_filename="bfs_log.txt")
+    solution = dfs(G, vertices, root_id, log_filename="dfs_log.txt")
     
     if solution:
         print("Solução encontrada:", solution)
     else:
         print("Nenhuma solução encontrada.")
     
-    draw_colored_graph(G, solution, output_file="colored_graph_bfs.png")
-    print("Grafo colorido salvo em 'colored_graph_bfs.png'.")
+    draw_colored_graph(G, solution, output_file="colored_graph_dfs.png")
+    print("Grafo colorido salvo em 'colored_graph_dfs.png'.")
     
-    draw_search_tree(search_tree, output_file="search_tree_bfs.png")
-    print("Árvore de busca salva em 'search_tree_bfs.png'.")
-    print("Log de BFS salvo em 'bfs_log.txt'.")
+    draw_search_tree(search_tree, output_file="search_tree_dfs.png")
+    print("Árvore de busca salva em 'search_tree_dfs.png'.")
+    print("Log de DFS salvo em 'dfs_log.txt'.")
 
 if __name__ == '__main__':
     main()
