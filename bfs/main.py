@@ -125,9 +125,9 @@ def draw_colored_graph(G, assignment, output_file="colored_graph_bfs.png"):
     node_colors = [color_map[assignment[node]] if node in assignment else "gray" for node in G.nodes()]
     
     try:
-        pos = nx.nx_agraph.graphviz_layout(tree, prog='dot', args='-Granksep=2 -Gnodesep=1')
+        pos = nx.nx_agraph.graphviz_layout(G, prog='dot', args='-Granksep=2 -Gnodesep=1')
     except Exception as e:
-        pos = nx.spring_layout(tree)
+        pos = nx.spring_layout(G)
 
     plt.figure(figsize=(8, 6))
     nx.draw(G, pos, with_labels=True, node_color=node_colors, node_size=800, font_size=12)
