@@ -1,0 +1,48 @@
+
+=== Iteração para vértice 1 ===
+Abertos: (v=1, cor=1, custo_add=0), (v=1, cor=2, custo_add=0), (v=1, cor=3, custo_add=0), (v=1, cor=4, custo_add=0)
+Fechados (escolhido): (v=1, cor=1, custo_add=0)
+Cor escolhida para vértice 1 = 1, custo adicional = 0
+Custo acumulado até agora: 0
+
+=== Iteração para vértice 2 ===
+Abertos: (v=2, cor=2, custo_add=2.0), (v=2, cor=3, custo_add=2.0), (v=2, cor=4, custo_add=2.0)
+Fechados (escolhido): (v=2, cor=2, custo_add=2.0)
+Cor escolhida para vértice 2 = 2, custo adicional = 2.0
+Custo acumulado até agora: 2.0
+
+=== Iteração para vértice 3 ===
+Abertos: (v=3, cor=3, custo_add=5.0), (v=3, cor=4, custo_add=5.0)
+Fechados (escolhido): (v=3, cor=3, custo_add=5.0)
+Cor escolhida para vértice 3 = 3, custo adicional = 5.0
+Custo acumulado até agora: 7.0
+
+=== Iteração para vértice 4 ===
+Abertos: (v=4, cor=2, custo_add=7.0), (v=4, cor=4, custo_add=7.0)
+Fechados (escolhido): (v=4, cor=2, custo_add=7.0)
+Cor escolhida para vértice 4 = 2, custo adicional = 7.0
+Custo acumulado até agora: 14.0
+
+=== Iteração para vértice 5 ===
+Abertos: (v=5, cor=1, custo_add=3.0), (v=5, cor=4, custo_add=3.0)
+Fechados (escolhido): (v=5, cor=1, custo_add=3.0)
+Cor escolhida para vértice 5 = 1, custo adicional = 3.0
+Custo acumulado até agora: 17.0
+
+=== Iteração para vértice 6 ===
+Abertos: (v=6, cor=3, custo_add=6.0), (v=6, cor=4, custo_add=6.0)
+Fechados (escolhido): (v=6, cor=3, custo_add=6.0)
+Cor escolhida para vértice 6 = 3, custo adicional = 6.0
+Custo acumulado até agora: 23.0
+
+=== Iteração para vértice 7 ===
+Abertos: (v=7, cor=4, custo_add=6.0)
+Fechados (escolhido): (v=7, cor=4, custo_add=6.0)
+Cor escolhida para vértice 7 = 4, custo adicional = 6.0
+Custo acumulado até agora: 29.0
+
+=== Iteração para vértice 8 ===
+Abertos: (v=8, cor=3, custo_add=6.0)
+Fechados (escolhido): (v=8, cor=3, custo_add=6.0)
+Cor escolhida para vértice 8 = 3, custo adicional = 6.0
+Custo acumulado até agora: 35.0
